@@ -1,0 +1,75 @@
+import { useEffect, useState } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { getBannerImage } from '@/lib/store-utils';
+import { Button } from '@/components/ui/button';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import Autoplay from 'embla-carousel-autoplay';
+import { motion } from 'framer-motion';
+
+interface Banner {
+  id: string;
+  title: string;
+  subtitle: string | null;
+  image_url: string | null;
+  link: string | null;
+}
+
+const HeroCarousel = () => {
+  const [banners, setBanners] = useState<Banner[]>([]);
+
+  useEffect(() => {
+    supabase.from('banners')
+      .select('*')
+      .eq('type', 'carousel')
+      .eq('is_active', true)
+      .order('sort_order')
+      .then(({ data }) => {
+        if (data) setBanners(data);
+      });
+  }, []);
+
+  if (!banners.length) return null;
+
+  return (
+    <Carousel
+      opts={{ loop: true }}
+      plugins={[Autoplay({ delay: 5000 })]}
+      className="w-full"
+    >
+      <CarouselContent>
+        {banners.map((banner) => (
+          <CarouselItem key={banner.id}>
+            <div className="relative h-[400px] md:h-[500px] overflow-hidden rounded-lg">
+              <img
+                src={getBannerImage(banner.title, banner.image_url)}
+                alt={banner.title}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/50 to-transparent" />
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                className="absolute inset-0 flex flex-col justify-center px-8 md:px-16 max-w-2xl"
+              >
+                <h2 className="font-heading text-3xl md:text-5xl font-bold text-foreground mb-3 leading-tight">
+                  {banner.title}
+                </h2>
+                {banner.subtitle && (
+                  <p className="text-muted-foreground text-lg md:text-xl mb-6">{banner.subtitle}</p>
+                )}
+                <Button className="w-fit gradient-neon text-primary-foreground font-heading font-bold text-lg px-8 py-6 neon-glow hover:opacity-90 transition-opacity">
+                  Comprar Agora
+                </Button>
+              </motion.div>
+            </div>
+          </CarouselItem>
+        ))}
+      </CarouselContent>
+      <CarouselPrevious className="left-4 bg-card/80 border-border hover:bg-card" />
+      <CarouselNext className="right-4 bg-card/80 border-border hover:bg-card" />
+    </Carousel>
+  );
+};
+
+export default HeroCarousel;
