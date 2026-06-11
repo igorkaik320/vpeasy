@@ -50,6 +50,105 @@ export type Database = {
         }
         Relationships: []
       }
+      gift_requests: {
+        Row: {
+          created_at: string
+          id: string
+          order_id: string
+          status: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          order_id: string
+          status?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          order_id?: string
+          status?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gift_requests_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      order_messages: {
+        Row: {
+          created_at: string
+          id: string
+          message: string
+          order_id: string
+          sender_id: string | null
+          sender_role: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message: string
+          order_id: string
+          sender_id?: string | null
+          sender_role?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: string
+          order_id?: string
+          sender_id?: string | null
+          sender_role?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_messages_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      order_status_history: {
+        Row: {
+          created_at: string
+          id: string
+          note: string | null
+          order_id: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          note?: string | null
+          order_id: string
+          status: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          note?: string | null
+          order_id?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_status_history_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       orders: {
         Row: {
           address_city: string | null
@@ -61,9 +160,15 @@ export type Database = {
           customer_email: string
           customer_name: string
           customer_phone: string | null
+          game_nick: string | null
+          game_notes: string | null
+          game_server: string | null
           id: string
           items: Json
           payment_id: string | null
+          product_type: string | null
+          release_at: string | null
+          riot_id: string | null
           shipping: number
           status: string
           subtotal: number
@@ -81,9 +186,15 @@ export type Database = {
           customer_email: string
           customer_name: string
           customer_phone?: string | null
+          game_nick?: string | null
+          game_notes?: string | null
+          game_server?: string | null
           id?: string
           items?: Json
           payment_id?: string | null
+          product_type?: string | null
+          release_at?: string | null
+          riot_id?: string | null
           shipping?: number
           status?: string
           subtotal?: number
@@ -101,9 +212,15 @@ export type Database = {
           customer_email?: string
           customer_name?: string
           customer_phone?: string | null
+          game_nick?: string | null
+          game_notes?: string | null
+          game_server?: string | null
           id?: string
           items?: Json
           payment_id?: string | null
+          product_type?: string | null
+          release_at?: string | null
+          riot_id?: string | null
           shipping?: number
           status?: string
           subtotal?: number
@@ -139,6 +256,7 @@ export type Database = {
       }
       products: {
         Row: {
+          badge: string | null
           category: string | null
           created_at: string
           description: string | null
@@ -148,12 +266,15 @@ export type Database = {
           is_featured: boolean
           name: string
           price: number
+          product_type: string | null
           promo_price: number | null
+          release_days: number | null
           slug: string
           stock: number | null
           updated_at: string
         }
         Insert: {
+          badge?: string | null
           category?: string | null
           created_at?: string
           description?: string | null
@@ -163,12 +284,15 @@ export type Database = {
           is_featured?: boolean
           name: string
           price: number
+          product_type?: string | null
           promo_price?: number | null
+          release_days?: number | null
           slug: string
           stock?: number | null
           updated_at?: string
         }
         Update: {
+          badge?: string | null
           category?: string | null
           created_at?: string
           description?: string | null
@@ -178,7 +302,9 @@ export type Database = {
           is_featured?: boolean
           name?: string
           price?: number
+          product_type?: string | null
           promo_price?: number | null
+          release_days?: number | null
           slug?: string
           stock?: number | null
           updated_at?: string
@@ -211,6 +337,53 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      reviews: {
+        Row: {
+          comment: string | null
+          created_at: string
+          customer_name: string
+          id: string
+          is_approved: boolean
+          order_id: string | null
+          rating_overall: number
+          rating_service: number
+          rating_speed: number
+          user_id: string | null
+        }
+        Insert: {
+          comment?: string | null
+          created_at?: string
+          customer_name: string
+          id?: string
+          is_approved?: boolean
+          order_id?: string | null
+          rating_overall: number
+          rating_service: number
+          rating_speed: number
+          user_id?: string | null
+        }
+        Update: {
+          comment?: string | null
+          created_at?: string
+          customer_name?: string
+          id?: string
+          is_approved?: boolean
+          order_id?: string | null
+          rating_overall?: number
+          rating_service?: number
+          rating_speed?: number
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reviews_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       store_settings: {
         Row: {
