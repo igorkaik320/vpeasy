@@ -20,6 +20,9 @@ import AdminBanners from "./pages/admin/AdminBanners";
 import AdminOrders from "./pages/admin/AdminOrders";
 import AdminPages from "./pages/admin/AdminPages";
 import AdminSettings from "./pages/admin/AdminSettings";
+import AdminReviews from "./pages/admin/AdminReviews";
+import AdminMessages from "./pages/admin/AdminMessages";
+import Reviews from "./pages/Reviews";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -43,11 +46,14 @@ const App = () => (
               <Route path="/sobre" element={<Page />} />
               <Route path="/termos" element={<Page />} />
               <Route path="/politica" element={<Page />} />
+              <Route path="/avaliacoes" element={<Reviews />} />
               <Route path="/admin" element={<AdminLayout />}>
                 <Route index element={<AdminDashboard />} />
                 <Route path="produtos" element={<AdminProducts />} />
                 <Route path="banners" element={<AdminBanners />} />
                 <Route path="pedidos" element={<AdminOrders />} />
+                <Route path="mensagens" element={<AdminMessages />} />
+                <Route path="avaliacoes" element={<AdminReviews />} />
                 <Route path="paginas" element={<AdminPages />} />
                 <Route path="configuracoes" element={<AdminSettings />} />
               </Route>
