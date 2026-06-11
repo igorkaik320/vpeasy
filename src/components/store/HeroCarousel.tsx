@@ -14,6 +14,14 @@ interface Banner {
   link: string | null;
 }
 
+const defaultHeroBanner: Banner = {
+  id: 'default-waylay-hero',
+  title: 'Skins e Passes Valorant Mobile',
+  subtitle: 'Garanta seus pacotes com atendimento seguro e entrega acompanhada pela VPEASY.',
+  image_url: null,
+  link: '/produtos',
+};
+
 const HeroCarousel = () => {
   const [banners, setBanners] = useState<Banner[]>([]);
 
@@ -24,11 +32,11 @@ const HeroCarousel = () => {
       .eq('is_active', true)
       .order('sort_order')
       .then(({ data }) => {
-        if (data) setBanners(data);
+        setBanners(data?.length ? data : [defaultHeroBanner]);
       });
   }, []);
 
-  if (!banners.length) return null;
+  const visibleBanners = banners.length ? banners : [defaultHeroBanner];
 
   return (
     <Carousel
@@ -37,7 +45,7 @@ const HeroCarousel = () => {
       className="w-full"
     >
       <CarouselContent>
-        {banners.map((banner) => (
+        {visibleBanners.map((banner) => (
           <CarouselItem key={banner.id}>
             <div className="relative h-[400px] md:h-[500px] overflow-hidden rounded-lg border border-border bg-card shadow-lg">
               <img

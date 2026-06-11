@@ -9,7 +9,7 @@ const FeaturedProducts = () => {
     supabase.from('products')
       .select('*')
       .eq('is_active', true)
-      .eq('is_featured', true)
+      .order('is_featured', { ascending: false })
       .order('price', { ascending: true })
       .then(({ data }) => {
         if (data) setProducts(data);

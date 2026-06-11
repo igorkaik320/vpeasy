@@ -17,6 +17,7 @@ const emptyForm = {
   slug: '',
   description: '',
   vp_required: '',
+  price: '',
   promo_price: '',
   image_url: '',
   images_extra: '',
@@ -63,6 +64,7 @@ const AdminProducts = () => {
       slug: p.slug || '',
       description: p.description || '',
       vp_required: p.vp_required ? String(p.vp_required) : '',
+      price: p.price ? String(p.price) : '',
       promo_price: p.promo_price ? String(p.promo_price) : '',
       image_url: images[0] || '',
       images_extra: images.slice(1).join('\n'),
@@ -83,6 +85,10 @@ const AdminProducts = () => {
     return calculatePricing(vp, marginPercent, walletBalance);
   }, [form.vp_required, marginPercent, walletBalance]);
 
+  const finalPrice = form.price ? Number(form.price) : pricing?.salePrice || 0;
+  const effectiveProfit = pricing ? Number((finalPrice - pricing.operationCost).toFixed(2)) : 0;
+  const effectiveMargin = pricing?.operationCost ? Number(((effectiveProfit / pricing.operationCost) * 100).toFixed(2)) : marginPercent;
+
   const getImagesFromForm = () =>
     [form.image_url, ...form.images_extra.split('\n')]
       .map((image) => image.trim())
@@ -99,7 +105,7 @@ const AdminProducts = () => {
       slug: form.slug || form.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''),
       description: form.description,
       vp_required: pricing.requestedVp,
-      price: pricing.salePrice,
+      price: finalPrice,
       promo_price: form.promo_price ? parseFloat(form.promo_price) : null,
       images: getImagesFromForm(),
       is_active: form.is_active,
@@ -116,8 +122,8 @@ const AdminProducts = () => {
       gift_card_total_cny: pricing.totalGiftCny,
       gift_card_combo: pricing.giftCards,
       real_cost: pricing.operationCost,
-      profit: pricing.profit,
-      margin_percent: pricing.marginPercent,
+      profit: effectiveProfit,
+      margin_percent: Math.round(effectiveMargin),
       leftover_cny: pricing.leftoverCny,
     };
 
@@ -189,6 +195,7 @@ const AdminProducts = () => {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div><Label>VP necessario</Label><Input type="number" min="1" value={form.vp_required} onChange={e => setForm({ ...form, vp_required: e.target.value })} placeholder="Ex: 1290" className="bg-secondary border-border" /></div>
+                  <div><Label>Preco final</Label><Input type="number" step="0.01" value={form.price} onChange={e => setForm({ ...form, price: e.target.value })} placeholder={pricing ? String(pricing.salePrice) : 'Calculado'} className="bg-secondary border-border" /></div>
                   <div><Label>Preco promo opcional</Label><Input type="number" step="0.01" value={form.promo_price} onChange={e => setForm({ ...form, promo_price: e.target.value })} className="bg-secondary border-border" /></div>
                 </div>
 
@@ -263,9 +270,10 @@ const AdminProducts = () => {
                     <div className="flex justify-between"><span>Total comprado</span><strong>{pricing.totalGiftCny} CNY</strong></div>
                     <div className="flex justify-between"><span>Sobra</span><strong>{pricing.leftoverCny} CNY</strong></div>
                     <div className="flex justify-between"><span>Custo real</span><strong>{formatPrice(pricing.operationCost)}</strong></div>
-                    <div className="flex justify-between"><span>Margem</span><strong>{pricing.marginPercent}%</strong></div>
-                    <div className="flex justify-between"><span>Lucro</span><strong>{formatPrice(pricing.profit)}</strong></div>
-                    <div className="border-t border-border pt-2 flex justify-between text-base"><span>Preco final</span><strong className="text-primary">{formatPrice(pricing.salePrice)}</strong></div>
+                    <div className="flex justify-between"><span>Preco sugerido</span><strong>{formatPrice(pricing.salePrice)}</strong></div>
+                    <div className="flex justify-between"><span>Margem real</span><strong>{effectiveMargin.toFixed(2)}%</strong></div>
+                    <div className="flex justify-between"><span>Lucro real</span><strong>{formatPrice(effectiveProfit)}</strong></div>
+                    <div className="border-t border-border pt-2 flex justify-between text-base"><span>Preco final</span><strong className="text-primary">{formatPrice(finalPrice)}</strong></div>
                   </div>
                 ) : (
                   <p className="text-sm text-muted-foreground">Informe o VP necessario para calcular.</p>

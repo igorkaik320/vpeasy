@@ -4,7 +4,7 @@ import productSkin1290 from '@/assets/product-skin-1290.jpg';
 import productSkin1560 from '@/assets/product-skin-1560.jpg';
 import productSkin1980 from '@/assets/product-skin-1980.jpg';
 import productSkinCustom from '@/assets/product-skin-custom.jpg';
-import bannerValorant from '@/assets/banner-valorant.jpg';
+import bannerValorant from '@/assets/banner-waylay-valorant.png';
 
 export const PRODUCT_IMAGES: Record<string, string> = {
   'passe-economico': productPasseEco,
