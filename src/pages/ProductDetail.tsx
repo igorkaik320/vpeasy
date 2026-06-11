@@ -32,9 +32,11 @@ const ProductDetail = () => {
   const image = getProductImage(product.slug, product.images || []);
   const discount = product.promo_price ? Math.round(((product.price - product.promo_price) / product.price) * 100) : 0;
 
+  const isCustom = product.product_type === 'skin_custom' || product.price === 0;
+
   const handleAdd = () => {
     for (let i = 0; i < qty; i++) {
-      addItem({ id: product.id, name: product.name, price: product.price, promoPrice: product.promo_price, image });
+      addItem({ id: product.id, name: product.name, price: product.price, promoPrice: product.promo_price, image, productType: product.product_type, releaseDays: product.release_days } as any);
     }
     toast.success(`${product.name} adicionado ao carrinho!`);
   };
@@ -46,8 +48,8 @@ const ProductDetail = () => {
         <div className="grid md:grid-cols-2 gap-10">
           <div className="relative rounded-lg overflow-hidden bg-surface aspect-square">
             <img src={image} alt={product.name} className="w-full h-full object-cover" />
-            {discount > 0 && (
-              <span className="absolute top-4 left-4 gradient-neon text-primary-foreground font-bold px-3 py-1 rounded-md">-{discount}%</span>
+            {product.badge && (
+              <span className="absolute top-4 left-4 gradient-neon text-primary-foreground font-bold px-3 py-1 rounded-md font-heading tracking-wider neon-glow">{product.badge}</span>
             )}
           </div>
           <div className="flex flex-col justify-center">
