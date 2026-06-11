@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react';
 import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { LayoutDashboard, Package, Image, FileText, ShoppingBag, LogOut, Gamepad2, Settings } from 'lucide-react';
+import { LayoutDashboard, Package, Image, FileText, ShoppingBag, LogOut, Crosshair, Settings, MessageSquare, Star } from 'lucide-react';
 
 const navItems = [
   { to: '/admin', icon: LayoutDashboard, label: 'Dashboard' },
   { to: '/admin/produtos', icon: Package, label: 'Produtos' },
   { to: '/admin/banners', icon: Image, label: 'Banners' },
   { to: '/admin/pedidos', icon: ShoppingBag, label: 'Pedidos' },
+  { to: '/admin/mensagens', icon: MessageSquare, label: 'Mensagens' },
+  { to: '/admin/avaliacoes', icon: Star, label: 'Avaliações' },
   { to: '/admin/paginas', icon: FileText, label: 'Páginas' },
   { to: '/admin/configuracoes', icon: Settings, label: 'Configurações' },
 ];
@@ -27,8 +29,8 @@ const AdminLayout = () => {
     <div className="min-h-screen bg-background flex">
       <aside className="w-64 bg-card border-r border-border/50 flex flex-col sticky top-0 h-screen">
         <div className="p-4 border-b border-border/50 flex items-center gap-2">
-          <Gamepad2 className="h-6 w-6 text-primary" />
-          <span className="font-display text-sm font-bold neon-text">ADMIN</span>
+          <Crosshair className="h-6 w-6 text-primary" />
+          <span className="font-display text-sm font-bold neon-text tracking-widest">ADMIN</span>
         </div>
         <nav className="flex-1 p-3 space-y-1">
           {navItems.map(({ to, icon: Icon, label }) => (

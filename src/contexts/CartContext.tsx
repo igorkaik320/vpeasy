@@ -7,6 +7,8 @@ export interface CartItem {
   promoPrice?: number | null;
   image: string;
   quantity: number;
+  productType?: string | null;
+  releaseDays?: number | null;
 }
 
 interface CartContextType {
@@ -23,12 +25,12 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [items, setItems] = useState<CartItem[]>(() => {
-    const saved = localStorage.getItem('levelup-cart');
+    const saved = localStorage.getItem('vpstore-cart');
     return saved ? JSON.parse(saved) : [];
   });
 
   useEffect(() => {
-    localStorage.setItem('levelup-cart', JSON.stringify(items));
+    localStorage.setItem('vpstore-cart', JSON.stringify(items));
   }, [items]);
 
   const addItem = (item: Omit<CartItem, 'quantity'>) => {

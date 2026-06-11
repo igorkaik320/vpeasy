@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ShoppingCart, User, Menu, X, Gamepad2 } from 'lucide-react';
+import { ShoppingCart, User, Menu, X, Crosshair } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useState } from 'react';
@@ -11,17 +11,17 @@ const StoreHeader = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 glass border-b border-border/50">
+    <header className="sticky top-0 z-50 glass border-b border-primary/30">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
-          <Gamepad2 className="h-7 w-7 text-primary" />
-          <span className="font-display text-lg font-bold neon-text tracking-wider">LEVELUP</span>
+          <Crosshair className="h-7 w-7 text-primary" />
+          <span className="font-display text-base font-bold neon-text tracking-widest">VP STORE BRASIL</span>
         </Link>
 
-        {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-6 text-sm font-heading">
+        <nav className="hidden md:flex items-center gap-6 text-sm font-heading uppercase tracking-wider">
           <Link to="/" className="text-foreground/80 hover:text-primary transition-colors">Início</Link>
           <Link to="/produtos" className="text-foreground/80 hover:text-primary transition-colors">Produtos</Link>
+          <Link to="/avaliacoes" className="text-foreground/80 hover:text-primary transition-colors">Avaliações</Link>
           <Link to="/sobre" className="text-foreground/80 hover:text-primary transition-colors">Sobre</Link>
         </nav>
 
@@ -41,7 +41,7 @@ const StoreHeader = () => {
             </Link>
           ) : (
             <Link to="/login">
-              <Button variant="outline" size="sm" className="border-primary/50 text-primary hover:bg-primary hover:text-primary-foreground">
+              <Button variant="outline" size="sm" className="border-primary/60 text-primary hover:bg-primary hover:text-primary-foreground">
                 Entrar
               </Button>
             </Link>
@@ -53,12 +53,12 @@ const StoreHeader = () => {
         </div>
       </div>
 
-      {/* Mobile nav */}
       {mobileOpen && (
-        <nav className="md:hidden border-t border-border/50 bg-card p-4 flex flex-col gap-3 font-heading">
-          <Link to="/" onClick={() => setMobileOpen(false)} className="py-2 text-foreground/80 hover:text-primary">Início</Link>
-          <Link to="/produtos" onClick={() => setMobileOpen(false)} className="py-2 text-foreground/80 hover:text-primary">Produtos</Link>
-          <Link to="/sobre" onClick={() => setMobileOpen(false)} className="py-2 text-foreground/80 hover:text-primary">Sobre</Link>
+        <nav className="md:hidden border-t border-border/50 bg-card p-4 flex flex-col gap-3 font-heading uppercase tracking-wider">
+          <Link to="/" onClick={() => setMobileOpen(false)} className="py-2">Início</Link>
+          <Link to="/produtos" onClick={() => setMobileOpen(false)} className="py-2">Produtos</Link>
+          <Link to="/avaliacoes" onClick={() => setMobileOpen(false)} className="py-2">Avaliações</Link>
+          <Link to="/sobre" onClick={() => setMobileOpen(false)} className="py-2">Sobre</Link>
         </nav>
       )}
     </header>

@@ -20,7 +20,7 @@ const HeroCarousel = () => {
   useEffect(() => {
     supabase.from('banners')
       .select('*')
-      .eq('type', 'carousel')
+      .in('type', ['hero', 'carousel'])
       .eq('is_active', true)
       .order('sort_order')
       .then(({ data }) => {
@@ -58,8 +58,8 @@ const HeroCarousel = () => {
                 {banner.subtitle && (
                   <p className="text-muted-foreground text-lg md:text-xl mb-6">{banner.subtitle}</p>
                 )}
-                <Button className="w-fit gradient-neon text-primary-foreground font-heading font-bold text-lg px-8 py-6 neon-glow hover:opacity-90 transition-opacity">
-                  Comprar Agora
+                <Button asChild className="w-fit gradient-neon text-primary-foreground font-heading font-bold text-lg px-8 py-6 neon-glow hover:opacity-90 transition-opacity uppercase tracking-wider">
+                  <a href={banner.link || '/produtos'}>Ver Produtos</a>
                 </Button>
               </motion.div>
             </div>
