@@ -12,7 +12,7 @@ const StoreHeader = () => {
 
   return (
     <header className="sticky top-0 z-50 glass border-b border-border">
-      <div className="hidden md:block bg-foreground text-background">
+      <div className="hidden md:block bg-secondary/80 text-foreground border-b border-border/70">
         <div className="container mx-auto px-4 h-9 flex items-center justify-center gap-8 text-xs font-semibold">
           <span className="flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-primary" /> Compra segura</span>
           <span className="flex items-center gap-2"><Zap className="h-4 w-4 text-primary" /> Entrega rápida</span>

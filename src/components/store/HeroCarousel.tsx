@@ -53,7 +53,7 @@ const HeroCarousel = () => {
                 alt={banner.title}
                 className="w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/75 to-white/10" />
+              <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/55 to-transparent" />
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
