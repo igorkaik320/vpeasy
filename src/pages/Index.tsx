@@ -3,6 +3,7 @@ import StoreFooter from '@/components/store/StoreFooter';
 import HeroCarousel from '@/components/store/HeroCarousel';
 import InfoBanners from '@/components/store/InfoBanners';
 import FeaturedProducts from '@/components/store/FeaturedProducts';
+import ReviewsSection from '@/components/store/ReviewsSection';
 
 const Index = () => {
   return (
@@ -12,6 +13,7 @@ const Index = () => {
         <HeroCarousel />
         <InfoBanners />
         <FeaturedProducts />
+        <ReviewsSection />
       </main>
       <StoreFooter />
     </div>
