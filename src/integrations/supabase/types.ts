@@ -84,6 +84,9 @@ export type Database = {
       }
       order_messages: {
         Row: {
+          attachment_name: string | null
+          attachment_type: string | null
+          attachment_url: string | null
           created_at: string
           id: string
           message: string
@@ -92,6 +95,9 @@ export type Database = {
           sender_role: string
         }
         Insert: {
+          attachment_name?: string | null
+          attachment_type?: string | null
+          attachment_url?: string | null
           created_at?: string
           id?: string
           message: string
@@ -100,6 +106,9 @@ export type Database = {
           sender_role?: string
         }
         Update: {
+          attachment_name?: string | null
+          attachment_type?: string | null
+          attachment_url?: string | null
           created_at?: string
           id?: string
           message?: string
@@ -166,6 +175,7 @@ export type Database = {
           id: string
           items: Json
           payment_id: string | null
+          pricing_wallet_applied: boolean
           product_type: string | null
           release_at: string | null
           riot_id: string | null
@@ -192,6 +202,7 @@ export type Database = {
           id?: string
           items?: Json
           payment_id?: string | null
+          pricing_wallet_applied?: boolean
           product_type?: string | null
           release_at?: string | null
           riot_id?: string | null
@@ -218,6 +229,7 @@ export type Database = {
           id?: string
           items?: Json
           payment_id?: string | null
+          pricing_wallet_applied?: boolean
           product_type?: string | null
           release_at?: string | null
           riot_id?: string | null
@@ -260,54 +272,144 @@ export type Database = {
           category: string | null
           created_at: string
           description: string | null
+          display_group: string | null
+          game_package_cny: number | null
+          game_package_vp: number | null
+          gift_card_combo: any | null
+          gift_card_total_cny: number | null
           id: string
           images: string[] | null
           is_active: boolean
           is_featured: boolean
+          leftover_cny: number | null
+          margin_percent: number | null
           name: string
+          package_contents: string | null
           price: number
+          planned_description: string | null
           product_type: string | null
+          profit: number | null
           promo_price: number | null
+          real_cost: number | null
           release_days: number | null
+          required_cny: number | null
           slug: string
           stock: number | null
           updated_at: string
+          vp_required: number | null
+          wallet_used_cny: number | null
         }
         Insert: {
           badge?: string | null
           category?: string | null
           created_at?: string
           description?: string | null
+          display_group?: string | null
+          game_package_cny?: number | null
+          game_package_vp?: number | null
+          gift_card_combo?: any | null
+          gift_card_total_cny?: number | null
           id?: string
           images?: string[] | null
           is_active?: boolean
           is_featured?: boolean
+          leftover_cny?: number | null
+          margin_percent?: number | null
           name: string
+          package_contents?: string | null
           price: number
+          planned_description?: string | null
           product_type?: string | null
+          profit?: number | null
           promo_price?: number | null
+          real_cost?: number | null
           release_days?: number | null
+          required_cny?: number | null
           slug: string
           stock?: number | null
           updated_at?: string
+          vp_required?: number | null
+          wallet_used_cny?: number | null
         }
         Update: {
           badge?: string | null
           category?: string | null
           created_at?: string
           description?: string | null
+          display_group?: string | null
+          game_package_cny?: number | null
+          game_package_vp?: number | null
+          gift_card_combo?: any | null
+          gift_card_total_cny?: number | null
           id?: string
           images?: string[] | null
           is_active?: boolean
           is_featured?: boolean
+          leftover_cny?: number | null
+          margin_percent?: number | null
           name?: string
+          package_contents?: string | null
           price?: number
+          planned_description?: string | null
           product_type?: string | null
+          profit?: number | null
           promo_price?: number | null
+          real_cost?: number | null
           release_days?: number | null
+          required_cny?: number | null
           slug?: string
           stock?: number | null
           updated_at?: string
+          vp_required?: number | null
+          wallet_used_cny?: number | null
+        }
+        Relationships: []
+      }
+      pricing_wallet: {
+        Row: {
+          balance_cny: number
+          id: boolean
+          updated_at: string
+        }
+        Insert: {
+          balance_cny?: number
+          id?: boolean
+          updated_at?: string
+        }
+        Update: {
+          balance_cny?: number
+          id?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      pricing_wallet_history: {
+        Row: {
+          balance_after_cny: number
+          change_cny: number
+          created_at: string
+          id: string
+          note: string | null
+          order_id: string | null
+          product_id: string | null
+        }
+        Insert: {
+          balance_after_cny: number
+          change_cny: number
+          created_at?: string
+          id?: string
+          note?: string | null
+          order_id?: string | null
+          product_id?: string | null
+        }
+        Update: {
+          balance_after_cny?: number
+          change_cny?: number
+          created_at?: string
+          id?: string
+          note?: string | null
+          order_id?: string | null
+          product_id?: string | null
         }
         Relationships: []
       }

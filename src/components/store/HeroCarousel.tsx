@@ -39,13 +39,13 @@ const HeroCarousel = () => {
       <CarouselContent>
         {banners.map((banner) => (
           <CarouselItem key={banner.id}>
-            <div className="relative h-[400px] md:h-[500px] overflow-hidden rounded-lg">
+            <div className="relative h-[400px] md:h-[500px] overflow-hidden rounded-lg border border-border bg-card shadow-lg">
               <img
                 src={getBannerImage(banner.title, banner.image_url)}
                 alt={banner.title}
                 className="w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/50 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/75 to-white/10" />
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -58,7 +58,7 @@ const HeroCarousel = () => {
                 {banner.subtitle && (
                   <p className="text-muted-foreground text-lg md:text-xl mb-6">{banner.subtitle}</p>
                 )}
-                <Button asChild className="w-fit gradient-neon text-primary-foreground font-heading font-bold text-lg px-8 py-6 neon-glow hover:opacity-90 transition-opacity uppercase tracking-wider">
+                <Button asChild className="w-fit gradient-neon text-primary-foreground font-heading font-bold text-lg px-8 py-6 shadow-lg hover:opacity-90 transition-opacity uppercase tracking-wider">
                   <a href={banner.link || '/produtos'}>Ver Produtos</a>
                 </Button>
               </motion.div>
@@ -66,8 +66,8 @@ const HeroCarousel = () => {
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselPrevious className="left-4 bg-card/80 border-border hover:bg-card" />
-      <CarouselNext className="right-4 bg-card/80 border-border hover:bg-card" />
+      <CarouselPrevious className="left-4 bg-card/90 border-border hover:bg-card shadow-md" />
+      <CarouselNext className="right-4 bg-card/90 border-border hover:bg-card shadow-md" />
     </Carousel>
   );
 };

@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { ShoppingCart, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/contexts/CartContext';
-import { getProductImage, formatPrice } from '@/lib/store-utils';
+import { getProductImage, formatPrice, getPlannedProductText, isPlannedProduct } from '@/lib/store-utils';
 import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 
@@ -11,20 +11,23 @@ interface ProductCardProps {
   name: string;
   slug: string;
   price: number;
+  vpRequired?: number | null;
   promoPrice?: number | null;
   images: string[];
   badge?: string | null;
   productType?: string | null;
   releaseDays?: number | null;
+  plannedDescription?: string | null;
 }
 
-const ProductCard = ({ id, name, slug, price, promoPrice, images, badge, productType, releaseDays }: ProductCardProps) => {
+const ProductCard = ({ id, name, slug, price, vpRequired, promoPrice, images, badge, productType, releaseDays, plannedDescription }: ProductCardProps) => {
   const { addItem } = useCart();
   const image = getProductImage(slug, images);
   const isCustom = productType === 'skin_custom' || price === 0;
+  const planned = isPlannedProduct(productType, releaseDays, slug);
 
   const handleAdd = () => {
-    addItem({ id, name, price, promoPrice, image, productType, releaseDays } as any);
+    addItem({ id, name, slug, price, vpRequired, promoPrice, image, productType, releaseDays, plannedDescription } as any);
     toast.success(`${name} adicionado ao carrinho!`);
   };
 
@@ -34,19 +37,19 @@ const ProductCard = ({ id, name, slug, price, promoPrice, images, badge, product
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.4 }}
-      className="group rounded-lg bg-card border border-primary/20 overflow-hidden hover:neon-border hover:neon-glow transition-all duration-300"
+      className="group h-full rounded-lg bg-card border border-border overflow-hidden shadow-sm hover:border-primary/30 hover:shadow-xl transition-all duration-300 flex flex-col"
     >
-      <Link to={`/produto/${slug}`} className="block relative aspect-square overflow-hidden bg-black">
+      <Link to={`/produto/${slug}`} className="block relative aspect-[16/9] overflow-hidden bg-secondary">
         <img src={image} alt={name} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
         {badge && (
-          <span className="absolute top-3 left-3 gradient-neon text-primary-foreground text-xs font-bold px-3 py-1 rounded-md font-heading tracking-wider neon-glow">
+          <span className="absolute top-3 left-3 gradient-neon text-primary-foreground text-xs font-bold px-3 py-1 rounded-md font-heading tracking-wider shadow-md">
             {badge}
           </span>
         )}
       </Link>
-      <div className="p-4">
+      <div className="p-4 flex flex-1 flex-col">
         <Link to={`/produto/${slug}`}>
-          <h3 className="font-heading font-bold text-foreground text-lg mb-2 line-clamp-2 hover:text-primary transition-colors uppercase tracking-wide">
+          <h3 className="font-heading font-bold text-foreground text-base mb-2 line-clamp-2 hover:text-primary transition-colors uppercase tracking-wide min-h-[48px]">
             {name}
           </h3>
         </Link>
@@ -62,9 +65,17 @@ const ProductCard = ({ id, name, slug, price, promoPrice, images, badge, product
             <span className="neon-text font-bold text-xl">{formatPrice(price)}</span>
           )}
         </div>
-        <Button onClick={handleAdd} className="w-full gradient-neon text-primary-foreground font-heading font-semibold gap-2 hover:opacity-90 uppercase tracking-wider">
+        {vpRequired ? <p className="mb-3 text-xs font-semibold text-muted-foreground">{vpRequired} VP</p> : null}
+        {planned && (
+          <p className="mb-3 rounded-md bg-accent/5 px-3 py-2 text-xs leading-relaxed text-muted-foreground line-clamp-2">
+            {getPlannedProductText(releaseDays, plannedDescription)}
+          </p>
+        )}
+        <div className="mt-auto">
+        <Button onClick={handleAdd} className="w-full gradient-neon text-primary-foreground font-heading font-semibold gap-2 shadow-md hover:opacity-90 uppercase tracking-wider">
           <ShoppingCart className="h-4 w-4" /> {isCustom ? 'Solicitar' : 'Adicionar'}
         </Button>
+        </div>
       </div>
     </motion.div>
   );

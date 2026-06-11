@@ -37,10 +37,10 @@ const Login = () => {
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
-      <div className="w-full max-w-md bg-card border border-border/50 rounded-lg p-8 neon-border">
+      <div className="w-full max-w-md bg-card border border-border rounded-lg p-8 shadow-xl">
         <Link to="/" className="flex items-center justify-center gap-2 mb-8">
           <Gamepad2 className="h-8 w-8 text-primary" />
-          <span className="font-display text-xl font-bold neon-text tracking-wider">LEVELUP</span>
+          <span className="font-display text-xl font-bold text-foreground tracking-wider">VPEASY</span>
         </Link>
         <h1 className="font-heading text-2xl font-bold text-center mb-6">{isSignUp ? 'Criar Conta' : 'Entrar'}</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -49,7 +49,7 @@ const Login = () => {
           )}
           <div><Label>Email</Label><Input type="email" value={email} onChange={e => setEmail(e.target.value)} required className="bg-secondary border-border" /></div>
           <div><Label>Senha</Label><Input type="password" value={password} onChange={e => setPassword(e.target.value)} required className="bg-secondary border-border" /></div>
-          <Button type="submit" disabled={loading} className="w-full gradient-neon text-primary-foreground font-heading font-bold neon-glow">
+          <Button type="submit" disabled={loading} className="w-full gradient-neon text-primary-foreground font-heading font-bold shadow-md">
             {loading ? 'Carregando...' : isSignUp ? 'Criar Conta' : 'Entrar'}
           </Button>
         </form>

@@ -4,11 +4,15 @@ export interface CartItem {
   id: string;
   name: string;
   price: number;
+  vpRequired?: number | null;
   promoPrice?: number | null;
   image: string;
+  slug?: string;
   quantity: number;
   productType?: string | null;
   releaseDays?: number | null;
+  plannedDescription?: string | null;
+  packageContents?: string | null;
 }
 
 interface CartContextType {

@@ -4,13 +4,24 @@ import StoreHeader from '@/components/store/StoreHeader';
 import StoreFooter from '@/components/store/StoreFooter';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
-import { formatPrice, STATUS_LABELS } from '@/lib/store-utils';
+import { formatPrice, getPlannedProductText, isPlannedProduct, STATUS_LABELS } from '@/lib/store-utils';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Countdown from '@/components/store/Countdown';
 import OrderChat from '@/components/store/OrderChat';
 import { Gift, ChevronLeft } from 'lucide-react';
 import { toast } from 'sonner';
+
+const getOrderReleaseDays = (order: any) =>
+  Math.max(0, ...((order.items as any[]) || []).map((it) => Number(it.release_days || 0)));
+
+const hasPlannedOrderItem = (order: any) =>
+  ((order.items as any[]) || []).some((it) => isPlannedProduct(it.product_type || order.product_type, it.release_days, it.slug || it.name));
+
+const getPlannedOrderText = (order: any) => {
+  const item = ((order.items as any[]) || []).find((it) => isPlannedProduct(it.product_type || order.product_type, it.release_days, it.slug || it.name));
+  return getPlannedProductText(getOrderReleaseDays(order) || 15, item?.planned_description);
+};
 
 const MyAccount = () => {
   const { user, signOut, loading } = useAuth();
@@ -41,12 +52,16 @@ const MyAccount = () => {
     const { error } = await supabase.from('gift_requests').insert({ order_id: selected.id, user_id: user.id });
     if (error) { toast.error(error.message); return; }
     await supabase.from('orders').update({ status: 'ready' }).eq('id', selected.id);
-    toast.success('Solicitação enviada ao vendedor!');
+    toast.success('Solicitacao enviada ao vendedor!');
     loadOrders();
   };
 
   if (selected) {
-    const releaseReady = !selected.release_at || new Date(selected.release_at).getTime() <= Date.now();
+    const plannedDays = getOrderReleaseDays(selected);
+    const planned = hasPlannedOrderItem(selected) || isPlannedProduct(selected.product_type, plannedDays);
+    const releaseStarted = !!selected.release_at && !['awaiting_seller', 'pending'].includes(selected.status);
+    const releaseReady = releaseStarted && new Date(selected.release_at).getTime() <= Date.now();
+
     return (
       <div className="min-h-screen bg-background">
         <StoreHeader />
@@ -75,21 +90,25 @@ const MyAccount = () => {
               </div>
 
               <div className="bg-card border border-primary/20 rounded-lg p-5">
-                <h3 className="font-heading font-bold uppercase mb-3">Dados do Jogo</h3>
+                <h3 className="font-heading font-bold uppercase mb-3">Dados do jogo</h3>
                 <div className="grid grid-cols-2 gap-3 text-sm">
-                  <div><span className="text-muted-foreground">Nick:</span> {selected.game_nick || '—'}</div>
-                  <div><span className="text-muted-foreground">Riot ID:</span> {selected.riot_id || '—'}</div>
-                  <div><span className="text-muted-foreground">Servidor:</span> {selected.game_server || '—'}</div>
+                  <div><span className="text-muted-foreground">Nick:</span> {selected.game_nick || '-'}</div>
+                  <div><span className="text-muted-foreground">Riot ID:</span> {selected.riot_id || '-'}</div>
+                  <div><span className="text-muted-foreground">Servidor:</span> {selected.game_server || '-'}</div>
                 </div>
                 {selected.game_notes && <p className="text-sm mt-3 text-muted-foreground">"{selected.game_notes}"</p>}
               </div>
 
-              {selected.product_type === 'passe_economico' && selected.release_at && (
+              {planned && (
                 <div className="bg-card border border-primary/40 rounded-lg p-5 neon-border">
-                  <h3 className="font-heading font-bold uppercase mb-3">Tempo até a liberação</h3>
-                  {releaseReady ? (
+                  <h3 className="font-heading font-bold uppercase mb-3">Compra planejada</h3>
+                  {!releaseStarted ? (
+                    <p className="text-sm text-muted-foreground">
+                      {getPlannedOrderText(selected)} O contador aparece aqui somente depois que o vendedor confirmar o pagamento e iniciar o prazo do pedido.
+                    </p>
+                  ) : releaseReady ? (
                     <Button onClick={requestGift} className="w-full gradient-neon text-primary-foreground font-heading font-bold neon-glow uppercase tracking-wider">
-                      <Gift className="h-4 w-4 mr-2" /> Receber Item
+                      <Gift className="h-4 w-4 mr-2" /> Receber item
                     </Button>
                   ) : (
                     <Countdown target={selected.release_at} onComplete={loadOrders} />
@@ -116,7 +135,7 @@ const MyAccount = () => {
           <Button variant="outline" onClick={() => { signOut(); navigate('/'); }} className="border-border">Sair</Button>
         </div>
 
-        <h2 className="font-heading text-xl font-bold mb-4 uppercase">Meus Pedidos</h2>
+        <h2 className="font-heading text-xl font-bold mb-4 uppercase">Meus pedidos</h2>
         {orders.length === 0 ? (
           <p className="text-muted-foreground">Nenhum pedido encontrado. <Link to="/produtos" className="text-primary">Ver produtos</Link></p>
         ) : (

@@ -22,6 +22,7 @@ import AdminPages from "./pages/admin/AdminPages";
 import AdminSettings from "./pages/admin/AdminSettings";
 import AdminReviews from "./pages/admin/AdminReviews";
 import AdminMessages from "./pages/admin/AdminMessages";
+import AdminPricingSimulator from "./pages/admin/AdminPricingSimulator";
 import Reviews from "./pages/Reviews";
 import NotFound from "./pages/NotFound";
 
@@ -53,6 +54,7 @@ const App = () => (
                 <Route path="banners" element={<AdminBanners />} />
                 <Route path="pedidos" element={<AdminOrders />} />
                 <Route path="mensagens" element={<AdminMessages />} />
+                <Route path="precificacao" element={<AdminPricingSimulator />} />
                 <Route path="avaliacoes" element={<AdminReviews />} />
                 <Route path="paginas" element={<AdminPages />} />
                 <Route path="configuracoes" element={<AdminSettings />} />

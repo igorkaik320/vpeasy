@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { LayoutDashboard, Package, Image, FileText, ShoppingBag, LogOut, Crosshair, Settings, MessageSquare, Star } from 'lucide-react';
+import { LayoutDashboard, Package, Image, FileText, ShoppingBag, LogOut, Crosshair, Settings, MessageSquare, Star, Calculator } from 'lucide-react';
 
 const navItems = [
   { to: '/admin', icon: LayoutDashboard, label: 'Dashboard' },
@@ -9,9 +9,10 @@ const navItems = [
   { to: '/admin/banners', icon: Image, label: 'Banners' },
   { to: '/admin/pedidos', icon: ShoppingBag, label: 'Pedidos' },
   { to: '/admin/mensagens', icon: MessageSquare, label: 'Mensagens' },
-  { to: '/admin/avaliacoes', icon: Star, label: 'Avaliações' },
-  { to: '/admin/paginas', icon: FileText, label: 'Páginas' },
-  { to: '/admin/configuracoes', icon: Settings, label: 'Configurações' },
+  { to: '/admin/precificacao', icon: Calculator, label: 'Precificacao' },
+  { to: '/admin/avaliacoes', icon: Star, label: 'Avaliacoes' },
+  { to: '/admin/paginas', icon: FileText, label: 'Paginas' },
+  { to: '/admin/configuracoes', icon: Settings, label: 'Configuracoes' },
 ];
 
 const AdminLayout = () => {

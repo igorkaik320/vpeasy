@@ -56,7 +56,7 @@ const ReviewsSection = ({ limit = 4 }: { limit?: number }) => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {reviews.map(r => (
-            <div key={r.id} className="bg-card border border-primary/20 rounded-lg p-4 hover:border-primary/50 transition-colors">
+            <div key={r.id} className="bg-card border border-border rounded-lg p-4 shadow-sm hover:border-primary/40 hover:shadow-md transition-all">
               <ReviewStars value={Math.round((r.rating_service + r.rating_speed + r.rating_overall) / 3)} />
               {r.comment && <p className="text-sm text-foreground/90 mt-3 line-clamp-4">"{r.comment}"</p>}
               <p className="text-xs text-muted-foreground mt-3 font-heading">— {r.customer_name}</p>

@@ -63,7 +63,7 @@ const ReviewsPage = () => {
           <div className="lg:col-span-2 space-y-4">
             {reviews.length === 0 && <p className="text-muted-foreground">Nenhuma avaliação ainda.</p>}
             {reviews.map(r => (
-              <div key={r.id} className="bg-card border border-primary/20 rounded-lg p-5">
+              <div key={r.id} className="bg-card border border-border rounded-lg p-5 shadow-sm">
                 <div className="flex items-center justify-between">
                   <p className="font-heading font-bold">{r.customer_name}</p>
                   <ReviewStars value={Math.round((r.rating_service + r.rating_speed + r.rating_overall) / 3)} />
@@ -79,7 +79,7 @@ const ReviewsPage = () => {
             ))}
           </div>
 
-          <div className="bg-card border border-primary/30 rounded-lg p-5 h-fit space-y-4">
+          <div className="bg-card border border-border rounded-lg p-5 h-fit space-y-4 shadow-sm">
             <h2 className="font-heading text-xl font-bold uppercase">Deixe sua avaliação</h2>
             <Input placeholder="Seu nome" value={form.name} onChange={(e) => setForm({...form, name: e.target.value})} className="bg-secondary border-border" />
             <RatingPick label="Atendimento" value={form.service} onChange={(v) => setForm({...form, service: v})} />

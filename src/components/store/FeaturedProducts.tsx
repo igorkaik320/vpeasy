@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import ProductCard from './ProductCard';
+import ProductSections from './ProductSections';
 
 const FeaturedProducts = () => {
   const [products, setProducts] = useState<any[]>([]);
@@ -16,27 +16,14 @@ const FeaturedProducts = () => {
       });
   }, []);
 
+  if (!products.length) return null;
+
   return (
     <section className="my-12">
       <h2 className="font-heading text-3xl font-bold text-foreground mb-8 uppercase tracking-wider">
         Produtos em <span className="neon-text">Destaque</span>
       </h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {products.map(p => (
-          <ProductCard
-            key={p.id}
-            id={p.id}
-            name={p.name}
-            slug={p.slug}
-            price={p.price}
-            promoPrice={p.promo_price}
-            images={p.images || []}
-            badge={p.badge}
-            productType={p.product_type}
-            releaseDays={p.release_days}
-          />
-        ))}
-      </div>
+      <ProductSections products={products} scroll />
     </section>
   );
 };

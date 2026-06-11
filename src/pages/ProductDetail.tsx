@@ -4,7 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import StoreHeader from '@/components/store/StoreHeader';
 import StoreFooter from '@/components/store/StoreFooter';
 import { useCart } from '@/contexts/CartContext';
-import { getProductImage, formatPrice } from '@/lib/store-utils';
+import { getProductImage, formatPrice, getPlannedProductText, isPlannedProduct } from '@/lib/store-utils';
 import { Button } from '@/components/ui/button';
 import { ShoppingCart, Minus, Plus } from 'lucide-react';
 import { toast } from 'sonner';
@@ -33,10 +33,11 @@ const ProductDetail = () => {
   const discount = product.promo_price ? Math.round(((product.price - product.promo_price) / product.price) * 100) : 0;
 
   const isCustom = product.product_type === 'skin_custom' || product.price === 0;
+  const planned = isPlannedProduct(product.product_type, product.release_days, product.slug || product.name);
 
   const handleAdd = () => {
     for (let i = 0; i < qty; i++) {
-      addItem({ id: product.id, name: product.name, price: product.price, promoPrice: product.promo_price, image, productType: product.product_type, releaseDays: product.release_days } as any);
+      addItem({ id: product.id, name: product.name, slug: product.slug, price: product.price, promoPrice: product.promo_price, image, productType: product.product_type, releaseDays: product.release_days, plannedDescription: product.planned_description } as any);
     }
     toast.success(`${product.name} adicionado ao carrinho!`);
   };
@@ -46,15 +47,22 @@ const ProductDetail = () => {
       <StoreHeader />
       <main className="container mx-auto px-4 py-8">
         <div className="grid md:grid-cols-2 gap-10">
-          <div className="relative rounded-lg overflow-hidden bg-surface aspect-square">
+          <div className="relative rounded-lg overflow-hidden bg-card border border-border shadow-lg aspect-square">
             <img src={image} alt={product.name} className="w-full h-full object-cover" />
             {product.badge && (
-              <span className="absolute top-4 left-4 gradient-neon text-primary-foreground font-bold px-3 py-1 rounded-md font-heading tracking-wider neon-glow">{product.badge}</span>
+              <span className="absolute top-4 left-4 gradient-neon text-primary-foreground font-bold px-3 py-1 rounded-md font-heading tracking-wider shadow-md">{product.badge}</span>
             )}
           </div>
-          <div className="flex flex-col justify-center">
+          <div className="flex flex-col justify-center bg-card border border-border rounded-lg p-6 shadow-sm">
             <h1 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-4">{product.name}</h1>
+            {product.vp_required && <p className="mb-3 font-heading font-bold text-primary uppercase">{product.vp_required} VP</p>}
             <p className="text-muted-foreground mb-6 leading-relaxed">{product.description}</p>
+            {planned && (
+              <div className="mb-6 rounded-lg border border-accent/20 bg-accent/5 p-4 text-sm text-muted-foreground">
+                <p className="font-heading font-bold uppercase text-accent mb-1">Produto de compra planejada</p>
+                <p>{getPlannedProductText(product.release_days, product.planned_description)}</p>
+              </div>
+            )}
             <div className="flex items-baseline gap-3 mb-6">
               {product.promo_price ? (
                 <>
@@ -73,7 +81,7 @@ const ProductDetail = () => {
                 <button onClick={() => setQty(qty + 1)} className="p-2 hover:bg-secondary"><Plus className="h-4 w-4" /></button>
               </div>
             </div>
-            <Button onClick={handleAdd} size="lg" className="gradient-neon text-primary-foreground font-heading font-bold text-lg gap-2 neon-glow hover:opacity-90">
+            <Button onClick={handleAdd} size="lg" className="gradient-neon text-primary-foreground font-heading font-bold text-lg gap-2 shadow-md hover:opacity-90">
               <ShoppingCart className="h-5 w-5" /> Adicionar ao Carrinho
             </Button>
           </div>

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import StoreHeader from '@/components/store/StoreHeader';
 import StoreFooter from '@/components/store/StoreFooter';
-import ProductCard from '@/components/store/ProductCard';
+import ProductSections from '@/components/store/ProductSections';
 
 const Products = () => {
   const [products, setProducts] = useState<any[]>([]);
@@ -17,11 +17,7 @@ const Products = () => {
       <StoreHeader />
       <main className="container mx-auto px-4 py-8">
         <h1 className="font-heading text-4xl font-bold text-foreground mb-8">Todos os <span className="neon-text">Produtos</span></h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {products.map(p => (
-            <ProductCard key={p.id} id={p.id} name={p.name} slug={p.slug} price={p.price} promoPrice={p.promo_price} images={p.images || []} />
-          ))}
-        </div>
+        <ProductSections products={products} />
       </main>
       <StoreFooter />
     </div>

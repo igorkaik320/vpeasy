@@ -29,7 +29,7 @@ const Countdown = ({ target, onComplete }: CountdownProps) => {
   if (time.diff === 0) return null;
 
   const Box = ({ value, label }: { value: number; label: string }) => (
-    <div className="flex flex-col items-center bg-black/60 border border-primary/40 rounded-md px-3 py-2 min-w-[60px] neon-border">
+    <div className="flex flex-col items-center bg-card border border-border rounded-md px-3 py-2 min-w-[60px] shadow-sm">
       <span className="font-display text-2xl neon-text font-bold leading-none">{String(value).padStart(2,'0')}</span>
       <span className="text-[10px] text-muted-foreground uppercase tracking-wider mt-1">{label}</span>
     </div>

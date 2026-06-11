@@ -38,8 +38,10 @@ export const formatPrice = (price: number) => {
 };
 
 export const STATUS_LABELS: Record<string, string> = {
+  awaiting_seller: 'Aguardando Vendedor',
   pending: 'Aguardando Pagamento',
   paid: 'Pagamento Confirmado',
+  approved: 'Aprovado',
   awaiting_info: 'Aguardando Informações',
   processing: 'Em Processamento',
   awaiting_release: 'Aguardando Liberação',
@@ -47,4 +49,15 @@ export const STATUS_LABELS: Record<string, string> = {
   delivered: 'Entregue',
 };
 
-export const STATUS_ORDER = ['pending','paid','awaiting_info','processing','awaiting_release','ready','delivered'];
+export const STATUS_ORDER = ['awaiting_seller','pending','paid','approved','awaiting_info','processing','awaiting_release','ready','delivered'];
+
+export const isPlannedProduct = (productType?: string | null, releaseDays?: number | null, nameOrSlug?: string | null) => {
+  const normalized = (nameOrSlug || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  return productType === 'passe_economico' || Number(releaseDays || 0) > 0 || normalized.includes('passe-economico') || normalized.includes('passe economico');
+};
+
+export const getPlannedProductText = (releaseDays?: number | null, customText?: string | null) => {
+  if (customText?.trim()) return customText.trim();
+  const days = Number(releaseDays || 15);
+  return `Compra planejada: este produto nao cai na hora. O prazo padrao e de ${days} dias apos confirmacao e inicio do processo pelo vendedor.`;
+};
