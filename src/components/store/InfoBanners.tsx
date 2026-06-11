@@ -1,16 +1,17 @@
-import { Truck, CreditCard, MapPin } from 'lucide-react';
+import { Gift, ShieldCheck, Headphones, Activity } from 'lucide-react';
 
 const infoBanners = [
-  { icon: Truck, text: 'Frete Grátis acima de R$299' },
-  { icon: CreditCard, text: 'Parcele em até 12x' },
-  { icon: MapPin, text: 'Entrega para todo Brasil' },
+  { icon: Gift, text: 'Entrega via presente' },
+  { icon: ShieldCheck, text: 'Mais segurança para sua conta' },
+  { icon: Headphones, text: 'Suporte rápido' },
+  { icon: Activity, text: 'Acompanhamento do pedido' },
 ];
 
 const InfoBanners = () => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-8">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 my-8">
       {infoBanners.map(({ icon: Icon, text }) => (
-        <div key={text} className="flex items-center gap-3 p-4 rounded-lg bg-card border border-border/50 neon-border">
+        <div key={text} className="flex items-center gap-3 p-4 rounded-lg bg-card border border-primary/20 hover:border-primary/60 hover:neon-glow transition-all">
           <Icon className="h-6 w-6 text-primary flex-shrink-0" />
           <span className="font-heading font-semibold text-foreground text-sm">{text}</span>
         </div>

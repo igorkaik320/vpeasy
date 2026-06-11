@@ -8,7 +8,6 @@ import { Link } from 'react-router-dom';
 
 const Cart = () => {
   const { items, removeItem, updateQuantity, total } = useCart();
-  const shipping = total >= 299 ? 0 : 29.90;
 
   if (!items.length) {
     return (
@@ -31,11 +30,11 @@ const Cart = () => {
     <div className="min-h-screen bg-background">
       <StoreHeader />
       <main className="container mx-auto px-4 py-8">
-        <h1 className="font-heading text-3xl font-bold text-foreground mb-8">Seu <span className="neon-text">Carrinho</span></h1>
+        <h1 className="font-heading text-3xl font-bold text-foreground mb-8 uppercase tracking-wider">Seu <span className="neon-text">Carrinho</span></h1>
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-4">
             {items.map(item => (
-              <div key={item.id} className="flex gap-4 bg-card border border-border/50 rounded-lg p-4">
+              <div key={item.id} className="flex gap-4 bg-card border border-primary/20 rounded-lg p-4">
                 <img src={item.image} alt={item.name} className="w-20 h-20 rounded-md object-cover" />
                 <div className="flex-1">
                   <h3 className="font-heading font-bold text-foreground">{item.name}</h3>
@@ -53,15 +52,17 @@ const Cart = () => {
               </div>
             ))}
           </div>
-          <div className="bg-card border border-border/50 rounded-lg p-6 h-fit sticky top-20">
-            <h3 className="font-heading text-xl font-bold mb-4">Resumo</h3>
+          <div className="bg-card border border-primary/30 rounded-lg p-6 h-fit sticky top-20">
+            <h3 className="font-heading text-xl font-bold mb-4 uppercase">Resumo</h3>
             <div className="space-y-2 text-sm mb-4">
               <div className="flex justify-between"><span className="text-muted-foreground">Subtotal</span><span>{formatPrice(total)}</span></div>
-              <div className="flex justify-between"><span className="text-muted-foreground">Frete</span><span>{shipping === 0 ? <span className="neon-text">Grátis</span> : formatPrice(shipping)}</span></div>
-              <div className="border-t border-border pt-2 flex justify-between font-bold text-lg"><span>Total</span><span className="neon-text">{formatPrice(total + shipping)}</span></div>
+              <div className="border-t border-border pt-2 flex justify-between font-bold text-lg"><span>Total</span><span className="neon-text">{formatPrice(total)}</span></div>
             </div>
+            <p className="text-xs text-muted-foreground mb-4">
+              Produto digital • Entrega via presente no jogo
+            </p>
             <Link to="/checkout">
-              <Button className="w-full gradient-neon text-primary-foreground font-heading font-bold neon-glow hover:opacity-90">
+              <Button className="w-full gradient-neon text-primary-foreground font-heading font-bold neon-glow hover:opacity-90 uppercase tracking-wider">
                 Finalizar Compra
               </Button>
             </Link>
